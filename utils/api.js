@@ -12,8 +12,8 @@ const fetcher = (...args) => {
     )
 }
 
-export const usePaitents = () => {
-  return useSWR(`${API_URL}/api/paitents`, fetcher)
+export const usePatients = () => {
+  return useSWR(`${API_URL}/api/patients`, fetcher)
 }
 
 export const useOrderById = (orderId) => {
@@ -32,9 +32,9 @@ const responseHandler = (result) => {
   return [undefined, new Error('Unexpected Error')]
 }
 
-export const createOrder = (paitentId, Message) => {
+export const createOrder = (patientId, Message) => {
   return fetch(
-    `${API_URL}/api/paitents/${paitentId}/orders`,
+    `${API_URL}/api/patients/${patientId}/orders`,
     {
       body: JSON.stringify({ Message }),
       method: 'POST',

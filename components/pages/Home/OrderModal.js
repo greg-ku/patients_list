@@ -42,8 +42,8 @@ const StyledTextField = styled(TextField)`
   }
 `
 
-const OrderModal = ({ open, onClose, paitent, onUpdatePaitentsOrderId }) => {
-  const { data: order, isLoading, mutate } = useOrderById(paitent?.OrderId)
+const OrderModal = ({ open, onClose, patient, onUpdatePatientsOrderId }) => {
+  const { data: order, isLoading, mutate } = useOrderById(patient?.OrderId)
 
   const [mode, setMode] = useState('preview')
   const [text, setText] = useState('')
@@ -71,11 +71,11 @@ const OrderModal = ({ open, onClose, paitent, onUpdatePaitentsOrderId }) => {
   }
 
   const onCreateOrder = async () => {
-    const [result, error] = await createOrder(paitent.Id, text)
+    const [result, error] = await createOrder(patient.Id, text)
     if (!error) {
       setMode('preview')
-      if (onUpdatePaitentsOrderId) {
-        onUpdatePaitentsOrderId(result.Id)
+      if (onUpdatePatientsOrderId) {
+        onUpdatePatientsOrderId(result.Id)
       }
     }
   }

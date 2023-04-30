@@ -6,17 +6,26 @@ const { Schema } = mongoose
 
 const createApiService = async () => {
   await mongoose.connect('mongodb://127.0.0.1:27017/test_patients')
-  // await mongoose.connect('mongodb://192.168.50.189:27017/test_patients')
+
+  // default data
+  const patients = await Paitent.find()
+  if (!patients?.length) {
+    await Paitent.create({ Name: '小明' })
+    await Paitent.create({ Name: '大明' })
+    await Paitent.create({ Name: '小美' })
+    await Paitent.create({ Name: '小霞' })
+    await Paitent.create({ Name: '貝克' })
+  }
 
   const server = express()
   server.use(bodyParser.json())
 
   const router = express.Router()
-    .get('/paitents', getPaitents)
-    .post('/paitents', createPaitent)
+    .get('/patients', getPaitents)
+    .post('/patients', createPaitent)
 
     .get('/orders', getOrders)
-    .post('/paitents/:paitentId/orders', createOrderByPaitent)
+    .post('/patients/:patientId/orders', createOrderByPaitent)
     .put('/orders/:orderId', updateOrderById)
     .get('/orders/:orderId', getOrderById)
 
@@ -46,10 +55,10 @@ PaitentSchema.set('toJSON', { virtuals: true })
 const Paitent = mongoose.model('Paitent', PaitentSchema)
 
 const getPaitents = async (req, res) => {
-  const paitents = await Paitent.find()
+  const patients = await Paitent.find()
   res.json({
     status: 'success',
-    data: paitents,
+    data: patients,
   })
 }
 
@@ -61,11 +70,11 @@ const createPaitent = async (req, res) => {
     })
     return
   }
-  const paitent = {
+  const patient = {
     Name: req.body.Name,
     OrderId: req.body.OrderId || null
   }
-  const newPaitent = await Paitent.create(paitent)
+  const newPaitent = await Paitent.create(patient)
   res.json({
     status: 'success',
     data: newPaitent
@@ -105,7 +114,7 @@ const createOrderByPaitent = async (req, res) => {
     Message: req.body.Message
   })
   await Paitent.updateOne(
-    { _id: req.params.paitentId },
+    { _id: req.params.patientId },
     { OrderId: newOrder._id }
   )
   res.json({
