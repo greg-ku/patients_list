@@ -1,6 +1,6 @@
-import next from 'next'
+const next = require('next')
 
-import createApiService from './api_services/create_api_service.js'
+const createApiService = require('./api_services/create_api_service')
 
 const dev = process.env.NODE_ENV !== 'production'
 const app = next({ dev })

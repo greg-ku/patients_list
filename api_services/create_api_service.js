@@ -1,6 +1,6 @@
-import express from 'express'
-import bodyParser from 'body-parser'
-import mongoose from 'mongoose'
+const express = require('express')
+const bodyParser = require('body-parser')
+const mongoose = require('mongoose')
 
 const { Schema } = mongoose
 
@@ -25,7 +25,7 @@ const createApiService = async () => {
   return server
 }
 
-export default createApiService
+module.exports = createApiService
 
 mongoose.connection.on('error', (err) => {
   console.error(`mongo error: ${err.message}`)
@@ -78,7 +78,7 @@ const OrderSchema = new Schema({
 {
   virtuals: {
     Id: {
-      set() { return this._id.toHexString() }
+      get() { return this._id.toHexString() }
     }
   }
 })
