@@ -6,8 +6,9 @@ const dev = process.env.NODE_ENV !== 'production'
 const app = next({ dev })
 const handle = app.getRequestHandler()
 
-app.prepare().then(() => {
-  createApiService()
+app.prepare().then(async () => {
+  const server = await createApiService()
+  server
     .use(handle)
     .listen(dev ? 3000 : 80, (err) => {
       if (err) throw err
